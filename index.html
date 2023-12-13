@@ -1,17 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>ican skillmap</title>
-        <style>
-            canvas{
-                display: block;
-                margin: auto;
-            } 
-        </style>
-    </head>
-    <body>
-        <h1>iCan SkillMap</h1>
-        <canvas id="canvas"></canvas>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iCan [SkillMap]</title>
+</head>
+<body style="margin: 0; overflow: hidden; background-color: white;">
+    <canvas id="myCanvas"></canvas>
 
-    </body>
+    <div id="panel" style="position: absolute; bottom: 5px; right: 2px; border: 1px solid #ccc; padding: 10px;">
+        <select id="dropdown">
+            <option value="option1">Option 1</option>
+            <option value="option2">Option 2</option>
+            <!-- Add more options as needed -->
+        </select>
+        <input type="text" id="textBox" placeholder="Type here">
+        <button onclick="handleButtonClick()">Click me</button>
+    </div>
+
+    <script>
+        // Set up the canvas
+        const canvas = document.getElementById("myCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Set the canvas size to match the viewport
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Calculate the center of the canvas
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+
+        // Draw a circle in the center with a white background and black borders
+        const circleRadius = 50; // Adjust the radius as needed
+
+        // Set the circle background to white
+        ctx.fillStyle = 'white';
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, circleRadius, 0, 2 * Math.PI);
+        ctx.fill();
+
+        // Set the circle border to black
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 5; // Adjust the border width as needed
+        ctx.stroke();
+
+        // Add text to the center of the circle with blue font color
+        const text = 'iCan';
+        ctx.fillStyle = 'blue'; // Blue color for the text
+        ctx.font = getOptimalFontSize(ctx, text, circleRadius * 1.5); // Adjust font size based on circle size
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(text, centerX, centerY);
+
+        // Function to get the optimal font size for the text to fill the circle
+        function getOptimalFontSize(context, text, maxWidth) {
+            let fontSize = 10; // Starting font size
+            do {
+                fontSize++;
+                context.font = `${fontSize}px Arial`;
+            } while (context.measureText(text).width < maxWidth);
+
+            return `${fontSize - 1}px Arial`;
+        }
+
+        // Function to handle button click in the panel
+        function handleButtonClick() {
+            // Add your button click logic here
+            alert('Button Clicked!');
+        }
+    </script>
+</body>
 </html>
