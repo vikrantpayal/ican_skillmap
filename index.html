@@ -32,28 +32,53 @@
         const centerY = canvas.height / 2;
 
         // Draw a circle in the center with a white background and black borders
-        const circleRadius = 50; // Adjust the radius as needed
+        function drawCircle() {
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, circleRadius, 0, 2 * Math.PI);
+            ctx.fill();
 
-        // Set the circle background to white
-        ctx.fillStyle = 'white';
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, circleRadius, 0, 2 * Math.PI);
-        ctx.fill();
-
-        // Set the circle border to black
-        ctx.strokeStyle = 'black';
-        ctx.lineWidth = 5; // Adjust the border width as needed
-        ctx.stroke();
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 5;
+            ctx.stroke();
+        }
 
         // Add text to the center of the circle with blue font color
-        const text = 'iCan';
-        ctx.fillStyle = 'blue'; // Blue color for the text
-        ctx.font = getOptimalFontSize(ctx, text, circleRadius * 1.5); // Adjust font size based on circle size
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(text, centerX, centerY);
+        function drawText() {
+            ctx.fillStyle = 'blue'; // Blue color for the text
+            ctx.font = getOptimalFontSize(ctx, text, circleRadius * 1.5); // Adjust font size based on circle size
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, centerX, centerY);
+        }
 
-        // Event listener for mousemove to show a plus sign along the periphery of the circle
+        // Draw the button-like plus sign along the periphery of the circle
+        function drawPlusButton(mouseX, mouseY) {
+            const angle = Math.atan2(mouseY - centerY, mouseX - centerX);
+            const plusX = centerX + circleRadius * Math.cos(angle);
+            const plusY = centerY + circleRadius * Math.sin(angle);
+
+            // Draw the button background
+            ctx.fillStyle = '#a6d7ff'; // Lighter shade of blue
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            ctx.shadowBlur = 5;
+            ctx.fillRect(plusX - 15, plusY - 10, 30, 20);
+
+            // Draw the button border
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(plusX - 15, plusY - 10, 30, 20);
+
+            // Reset shadow properties
+            ctx.shadowColor = 'transparent';
+
+            // Draw the plus sign in white
+            ctx.fillStyle = 'white';
+            ctx.fillRect(plusX - 5, plusY - 1, 10, 2); // Horizontal line
+            ctx.fillRect(plusX - 1, plusY - 5, 2, 10); // Vertical line
+        }
+
+        // Event listener for mousemove to show/hide the plus button
         canvas.addEventListener('mousemove', (e) => {
             const mouseX = e.clientX;
             const mouseY = e.clientY;
@@ -62,31 +87,19 @@
                 // Clear previous drawings
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                // Redraw the circle
-                ctx.fillStyle = 'white';
-                ctx.beginPath();
-                ctx.arc(centerX, centerY, circleRadius, 0, 2 * Math.PI);
-                ctx.fill();
+                // Redraw the circle and text
+                drawCircle();
+                drawText();
 
-                ctx.strokeStyle = 'black';
-                ctx.lineWidth = 5;
-                ctx.stroke();
+                // Draw the plus button
+                drawPlusButton(mouseX, mouseY);
+            } else {
+                // Clear the canvas and redraw the circle and text without the plus button
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                // Redraw the text
-                ctx.fillStyle = 'blue';
-                ctx.font = getOptimalFontSize(ctx, text, circleRadius * 1.5);
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(text, centerX, centerY);
-
-                // Draw the plus sign along the periphery of the circle
-                const angle = Math.atan2(mouseY - centerY, mouseX - centerX);
-                const plusX = centerX + circleRadius * Math.cos(angle);
-                const plusY = centerY + circleRadius * Math.sin(angle);
-
-                ctx.fillStyle = 'black';
-                ctx.fillRect(plusX - 5, plusY - 1, 10, 2); // Horizontal line
-                ctx.fillRect(plusX - 1, plusY - 5, 2, 10); // Vertical line
+                // Redraw the circle and text
+                drawCircle();
+                drawText();
             }
         });
 
@@ -112,6 +125,14 @@
             // Add your button click logic here
             alert('Button Clicked!');
         }
+
+        // Initial values
+        const circleRadius = 50;
+        const text = 'iCan';
+
+        // Initial drawing
+        drawCircle();
+        drawText();
     </script>
 </body>
 </html>
