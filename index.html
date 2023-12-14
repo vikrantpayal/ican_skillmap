@@ -31,11 +31,14 @@
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
 
+        // Array to store the positions of clicked plus buttons
+        const clickedPositions = [];
+
         // Draw a circle in the center with a white background and black borders
-        function drawCircle() {
+        function drawCircle(x, y) {
             ctx.fillStyle = 'white';
             ctx.beginPath();
-            ctx.arc(centerX, centerY, circleRadius, 0, 2 * Math.PI);
+            ctx.arc(x, y, circleRadius, 0, 2 * Math.PI);
             ctx.fill();
 
             ctx.strokeStyle = 'black';
@@ -44,12 +47,12 @@
         }
 
         // Add text to the center of the circle with blue font color
-        function drawText() {
+        function drawText(x, y) {
             ctx.fillStyle = 'blue'; // Blue color for the text
             ctx.font = getOptimalFontSize(ctx, text, circleRadius * 1.5); // Adjust font size based on circle size
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(text, centerX, centerY);
+            ctx.fillText(text, x, y);
         }
 
         // Draw the button-like plus sign along the periphery of the circle
@@ -75,7 +78,10 @@
             // Draw the plus sign in white
             ctx.fillStyle = 'white';
             ctx.fillRect(plusX - 5, plusY - 1, 10, 2); // Horizontal line
-            ctx.fillRect(plusX - 1, plusY - 5, 2, 10); // Vertical line
+            ctx.fillRect(plusX - 1, plusY - 5, 2, 10);
+
+            // Save the position of the clicked plus button
+            clickedPositions.push({ x: plusX, y: plusY });
         }
 
         // Event listener for mousemove to show/hide the plus button
@@ -88,8 +94,8 @@
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
                 // Redraw the circle and text
-                drawCircle();
-                drawText();
+                drawCircle(centerX, centerY);
+                drawText(centerX, centerY);
 
                 // Draw the plus button
                 drawPlusButton(mouseX, mouseY);
@@ -98,10 +104,37 @@
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
                 // Redraw the circle and text
-                drawCircle();
-                drawText();
+                drawCircle(centerX, centerY);
+                drawText(centerX, centerY);
             }
         });
+
+        // Event listener for click on the canvas
+        canvas.addEventListener('click', (e) => {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+
+            if (isMouseOverCircle(mouseX, mouseY)) {
+                // Call the click function when clicking on the plus button
+                handleClick(mouseX, mouseY);
+            }
+        });
+
+        // Function to handle button click in the panel
+        function handleButtonClick() {
+            // Add your button click logic here
+            // Remove the alert popup
+        }
+
+        // Function to handle click on the plus button
+        function handleClick(mouseX, mouseY) {
+            // Add your click logic here
+            // Remove the alert popup
+
+            // Draw a new circle at the clicked position
+            drawCircle(mouseX, mouseY);
+            drawText(mouseX, mouseY);
+        }
 
         // Function to check if the mouse is over the circle
         function isMouseOverCircle(mouseX, mouseY) {
@@ -120,19 +153,13 @@
             return `${fontSize - 1}px Arial`;
         }
 
-        // Function to handle button click in the panel
-        function handleButtonClick() {
-            // Add your button click logic here
-            alert('Button Clicked!');
-        }
-
         // Initial values
         const circleRadius = 50;
         const text = 'iCan';
 
         // Initial drawing
-        drawCircle();
-        drawText();
+        drawCircle(centerX, centerY);
+        drawText(centerX, centerY);
     </script>
 </body>
 </html>
