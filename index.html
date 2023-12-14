@@ -34,16 +34,21 @@
         // Array to store the positions of clicked plus buttons
         const clickedPositions = [];
 
-        // Draw a circle in the center with a white background and black borders
+        // Draw a circle in the center with a white background, thinner white border, and high blur shadow
         function drawCircle(x, y) {
-            ctx.fillStyle = 'white';
+            ctx.fillStyle = '#33cc33'; // Green color
             ctx.beginPath();
             ctx.arc(x, y, circleRadius, 0, 2 * Math.PI);
             ctx.fill();
 
-            ctx.strokeStyle = 'black';
-            ctx.lineWidth = 5;
+            ctx.shadowColor = 'rgba(50, 50, 50, 0.5)'; // Dark grey shadow
+            ctx.shadowBlur = 20; // High blur shadow
+
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 1; // Thinner white border
             ctx.stroke();
+
+            ctx.shadowColor = 'transparent'; // Reset shadow properties
         }
 
         // Add text to the center of the circle with blue font color
@@ -123,13 +128,13 @@
         // Function to handle button click in the panel
         function handleButtonClick() {
             // Add your button click logic here
-            // Remove the alert popup
+            // No alert popup
         }
 
         // Function to handle click on the plus button
         function handleClick(mouseX, mouseY) {
             // Add your click logic here
-            // Remove the alert popup
+            // No alert popup
 
             // Draw a new circle at the clicked position
             drawCircle(mouseX, mouseY);
